@@ -1,1 +1,151 @@
-<h1>FACTOR</h1>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>FACTOR</title>
+<link href="./files/style.css" rel="stylesheet">
+<script type="text/javascript" src="./files/jquery.mlens-1.0.min.js"></script> 
+<script type="text/javascript" src="./files/jquery.js"></script>
+</head>
+
+<body>
+<div class="content">
+  <h1><strong>Fine-grained Controllable Video Generation <br> via Object Appearance and Context</strong></h1>
+  <p id="authors"><a href="https://hhsinping.github.io/">Hsin-Ping Huang</a> <a href="https://sammy-su.github.io/">Yu-Chuan Su</a> <a href="https://deqings.github.io/">Deqing Sun</a> <a href="http://www.lujiang.info/">Lu Jiang</a> <a href="https://scholar.google.com/citations?user=vO0VSSYAAAAJ&hl=en">Xuhui Jia</a> <a href="https://scholar.google.com/citations?user=_CuXgYIAAAAJ&hl=en">Yukun Zhu</a>  <a href="https://faculty.ucmerced.edu/mhyang/">Ming-Hsuan Yang</a><br>
+    <br>
+  <span style="font-size: 24px">Google Research
+  </span></p>
+    <font size="+2">
+          <p style="text-align: center;">
+            <a href="https://arxiv.org/abs/" target="_blank">[Paper]</a>
+          </p>
+    </font>
+</div>
+<div class="content">
+  <h2 style="text-align:center;">Abstract</h2>
+  <p>Text-to-video generation has shown promising results. However, by taking only natural languages as input, users often face difficulties in providing detailed information to precisely control the model’s output. In this work, we propose fine-grained controllable video generation (FACTOR) to achieve detailed control. Specifically, FACTOR aims to control objects' appearances and context, including their location and category, in conjunction with the text prompt. To achieve detailed control, we propose a unified framework to jointly inject control signals into the existing text-to-video model. Our model consists of a joint encoder and adaptive cross-attention layers. By optimizing the encoder and the inserted layer, we adapt the model to generate videos that are aligned with both text prompts and fine-grained control. Compared to existing methods relying on dense control signals such as edge maps, we provide a more intuitive and user-friendly interface to allow object-level fine-grained control. Our method achieves controllability of object appearances without finetuning, which reduces the per-subject optimization efforts for the users. Extensive experiments on standard benchmark datasets and user-provided inputs validate that our model obtains a 70% improvement in controllability metrics over competitive baselines.</p>
+</div>
+<div class="content">
+  <h2 style="text-align:center;">Background</h2>
+  <p><b>Text-to-video generation</b> [Villegas et al., 2022] has limited controllable ability through user-provided prompts. Even when the users augment the text prompt with additional description, the model has difficulty controlling the precise movement and appearance of the object. <b>Text-to-Video+ControlNet</b> [Zhang et al., 2023] achieves promising visual quality while requiring dense control signals extracted from a reference video. <b>FACTOR (Ours)</b> improves the controllability through user-friendly inputs to control the: 1) precise movement of subjects through hand-drawing trajectory and 2) visual appearance by providing reference examples.</p>
+  <br>
+  <img class="summary-img" src="./factor_files/figure_teaser.png" style="width:100%;"> <br>
+</div>
+<div class="content">
+  <h2 style="text-align:center;">Approach</h2>
+  <p>Our method has three main components: a) <b>Joint encoder and adaptive cross-attention</b>: a joint encoder is learned to encode the prompt and control to capture the interaction between them. The adaptive layers are inserted into the transformer blocks of the text-to-video model to take new control signals. Only the inserted layers are optimized to adapt the model to generate videos satisfying the fine-grained control. b) <b>Condition encoding</b>: given T time steps, the embedding of control at time t is formed by the control for N entities, where padding tokens replace the embedding of the non-existing entity. c) <b>Entity control</b>: the control for entity n at time t is formed by the embedding of the context, i.e., the description, location, and reference appearance of the objects.</p>
+  <br>
+  <img class="summary-img" src="./factor_files/figure_method.png" style="width:100%;"> <br>
+</div>
+<div class="content">
+  <h2 style="text-align:center;">User Interface</h2>
+  <p>Our goal is to provide a user-friendly, controllable video generation framework that addresses ﬁne-grained control. We present an illustration of the user interface of FACTOR. <b>Click to play the video.</b></p>
+  <center><img src="./factor_files/interface.png" style="width:50%;"  onclick="this.src='./factor_files/interface.gif'"> <br></center>
+</div>
+
+<div class="content">
+  <h2 style="text-align:center;">Results of Trajectory Control</h2>
+	<p>FACTOR generates videos that align with the hand-drawn input trajectories of the entities. Furthermore, it brings an additional benefit of producing complex videos with interactions and relations. <b>Click to play the following videos.</b></p>
+
+        <table align = "center">
+            <tr>
+                <td align="left" style="padding-left: 10px; padding-top: 30px;"><img class="center" width="132" src="./factor_files/4.png"></td>
+                <td align="left" style="padding-left: 10px; padding-top: 30px;"><video class="clickplay"width="280"> <source src="./factor_files/4.mp4" type="video/mp4"> </video></td>
+                <td align="left" style="padding-left: 10px; padding-top: 30px;"><img class="center" width="132" src="./factor_files/5.png"></td>
+                <td align="left" style="padding-left: 10px; padding-top: 30px;"><video class="clickplay"width="280"> <source src="./factor_files/5.mp4" type="video/mp4"> </video></td>
+            </tr>
+            <tr>
+                <td width="140" valign="middle" halign="middle" align="center"></td>
+                <td width="280" valign="middle" halign="middle" align="center">An astronaut feeding ducks on a sunny afternoon, reflection from the water.</td>
+                <td width="140" valign="middle" halign="middle" align="center"></td>
+                <td width="280" valign="middle" halign="middle" align="center">A panda taking a selfie.</td>
+            </tr>
+            <tr>
+                <td align="left" style="padding-left: 10px; padding-top: 30px;"><img class="center" width="140" src="./factor_files/6.png"></td>
+                <td align="left" style="padding-left: 10px; padding-top: 30px;"><video class="clickplay"width="280"> <source src="./factor_files/6.mp4" type="video/mp4"> </video></td>
+                <td align="left" style="padding-left: 10px; padding-top: 30px;"><img class="center" width="140" src="./factor_files/7.png"></td>
+                <td align="left" style="padding-left: 10px; padding-top: 30px;"><video class="clickplay"width="280"> <source src="./factor_files/7.mp4" type="video/mp4"> </video></td>
+            </tr>
+            <tr>
+                <td width="140" valign="middle" halign="middle" align="center"></td>
+                <td width="280" valign="middle" halign="middle" align="center">A panda pillow fighting with Santa Claus in a golden wheat field.</td>
+                <td width="140" valign="middle" halign="middle" align="center"></td>
+                <td width="280" valign="middle" halign="middle" align="center">A motorcyclist high-fiving with a monkey on the shore.</td>
+            </tr>
+            <tr>
+                <td align="left" style="padding-left: 10px; padding-top: 30px;"><img class="center" width="140" src="./factor_files/8.png"></td>
+                <td align="left" style="padding-left: 10px; padding-top: 30px;"><video class="clickplay"width="280"> <source src="./factor_files/8.mp4" type="video/mp4"> </video></td>
+                <td align="left" style="padding-left: 10px; padding-top: 30px;"><img class="center" width="140" src="./factor_files/9.png"></td>
+                <td align="left" style="padding-left: 10px; padding-top: 30px;"><video class="clickplay"width="280"> <source src="./factor_files/9.mp4" type="video/mp4"> </video></td>
+            </tr>
+            <tr>
+                <td width="140" valign="middle" halign="middle" align="center"></td>
+                <td width="280" valign="middle" halign="middle" align="center">An elephant picking up a teddy bear on the floor in the room.</td>
+                <td width="140" valign="middle" halign="middle" align="center"></td>
+                <td width="280" valign="middle" halign="middle" align="center">A bear pushing the shopping cart on the street.</td>
+            </tr>
+
+        </table>
+</div>
+
+<div class="content">
+  <h2 style="text-align:center;">Results of Appearance Control</h2>
+	<p>FACTOR generates subjects aligned with the reference appearance images, producing videos with interactions and composition. Our method is finetuning-free and utilizes only one reference image per subject. <b>Click to play the following videos.</b></p>
+
+        <table align = "center">
+            <tr>
+                <td align="left" style="padding-left: 10px; padding-top: 30px;"><img class="center" width="132" src="./factor_files/0.png"></td>
+                <td align="left" style="padding-left: 10px; padding-top: 30px;"><video class="clickplay"width="280"> <source src="./factor_files/0.mp4" type="video/mp4"> </video></td>
+                <td align="left" style="padding-left: 10px; padding-top: 30px;"><img class="center" width="132" src="./factor_files/1.png"></td>
+                <td align="left" style="padding-left: 10px; padding-top: 30px;"><video class="clickplay"width="280"> <source src="./factor_files/1.mp4" type="video/mp4"> </video></td>
+            </tr>
+            <tr>
+                <td width="140" valign="middle" halign="middle" align="center"></td>
+                <td width="280" valign="middle" halign="middle" align="center">A foot in a sks shoe walking on the road.</td>
+                <td width="140" valign="middle" halign="middle" align="center"></td>
+                <td width="280" valign="middle" halign="middle" align="center">Milk poured into a sks vase.</td>
+            </tr>
+            <tr>
+                <td align="left" style="padding-left: 10px; padding-top: 30px;"><img class="center" width="140" src="./factor_files/2.png"></td>
+                <td align="left" style="padding-left: 10px; padding-top: 30px;"><video class="clickplay"width="280"> <source src="./factor_files/2.mp4" type="video/mp4"> </video></td>
+                <td align="left" style="padding-left: 10px; padding-top: 30px;"><img class="center" width="140" src="./factor_files/3.png"></td>
+                <td align="left" style="padding-left: 10px; padding-top: 30px;"><video class="clickplay"width="280"> <source src="./factor_files/3.mp4" type="video/mp4"> </video></td>
+            </tr>
+            <tr>
+                <td width="140" valign="middle" halign="middle" align="center"></td>
+                <td width="280" valign="middle" halign="middle" align="center">A sks tea pot on top of a building in New York, drone flight, 4k.</td>
+                <td width="140" valign="middle" halign="middle" align="center"></td>
+                <td width="280" valign="middle" halign="middle" align="center">A sks car driving in Manhattan.</td>
+            </tr>
+        </table>
+</div>
+
+
+<div class="content">
+  <h2>BibTex</h2>
+  <code> @article{huang2023factor,<br>
+  &nbsp;&nbsp;title={Fine-grained Controllable Video Generation via Object Appearance and Context},<br>
+  &nbsp;&nbsp;author={Huang, Hsin-Ping and Su, Yu-Chuan and Sun, Deqing and Jiang, Lu and Jia, Xuhui and Zhu, Yukun and Yang, Ming-Hsuan},<br>
+  &nbsp;&nbsp;journal={arXiv preprint arxiv:},<br>
+  &nbsp;&nbsp;year={2023}<br>
+  } </code> 
+</div>
+<div class="content" id="acknowledgements">
+  <p><strong>Acknowledgements</strong>:
+    We borrow this template from <a href="https://dreambooth.github.io/">DreamBooth</a> and <a href="https://animatediff.github.io/">AnimateDiff</a>.
+  </p>
+</div>
+</body>
+
+<script>
+var videos = document.getElementsByClassName("clickplay");
+for (var i = 0; i < videos.length; i++) {
+  videos[i].addEventListener("click", function() {
+    this.play();
+  });
+  videos[i].addEventListener("ended", function() {
+    this.pause();
+    this.currentTime = 0;
+  });
+}
+</script>
+</html>
